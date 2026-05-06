@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link" >Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="reservations.html" class="nav-link">Reservations</a>
+  <a href="packing.html" class="nav-link">Packing</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin">⚙ Admin</a>
+</nav>
+
+<main>
+  <div id="hero" class="trip-hero">
+    <h1 id="tripName">Loading…</h1>
+    <div class="destination" id="destination"></div>
+    <div class="dates" id="dates"></div>
+  </div>
+
+  <p id="description" style="color:var(--text-muted);margin-bottom:28px;font-size:15px;"></p>
+
+  <div class="features-grid">
+    <a href="itinerary.html" class="feature-card">
+      <div class="icon">🗓️</div>
+      <h3>Itinerary</h3>
+      <p>Day-by-day schedule and all the places you'll visit each day.</p>
+    </a>
+    <a href="attractions.html" class="feature-card">
+      <div class="icon">📍</div>
+      <h3>Attractions</h3>
+      <p>Complete list of places to visit with addresses, websites, and phone numbers.</p>
+    </a>
+    <a href="reservations.html" class="feature-card">
+      <div class="icon">🎫</div>
+      <h3>Reservations</h3>
+      <p>All confirmed bookings — flights, hotels, and transportation.</p>
+    </a>
+    <a href="packing.html" class="feature-card">
+      <div class="icon">🧳</div>
+      <h3>Packing List</h3>
+      <p>Everything you need to pack, organized by category. Check items off as you go.</p>
+    </a>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  (async () => {
+    try {
+      const data = await loadTripData();
+      const t = data.trip || {};
+      document.title = (t.name || 'Trip') + ' — Organizer';
+      document.getElementById('tripName').textContent = t.name || 'Family Trip';
+      document.getElementById('destination').textContent = t.destination || '';
+      if (t.startDate && t.endDate) {
+        const nights = Math.round((new Date(t.endDate) - new Date(t.startDate)) / 86400000);
+        document.getElementById('dates').textContent =
+          formatDateShort(t.startDate) + ' – ' + formatDateShort(t.endDate) + ` (${nights} nights)`;
+      }
+      document.getElementById('description').textContent = t.description || '';
+    } catch {
+      document.getElementById('tripName').textContent = 'Trip Organizer';
+    }
+  })();
+</script>
+</body>
+</html>

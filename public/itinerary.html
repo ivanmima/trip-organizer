@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Itinerary — Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="reservations.html" class="nav-link">Reservations</a>
+  <a href="packing.html" class="nav-link">Packing</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin">⚙ Admin</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>🗓️ Itinerary</h1>
+    <p id="subtitle">Daily schedule for your trip.</p>
+  </div>
+  <div id="itinerary-list"><div class="loading">Loading itinerary…</div></div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  (async () => {
+    const list = document.getElementById('itinerary-list');
+    try {
+      const data = await loadTripData();
+      const days = data.itinerary || [];
+      if (data.trip && data.trip.name) {
+        document.getElementById('subtitle').textContent = data.trip.name + ' — ' + days.length + ' days';
+      }
+      if (!days.length) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-icon">🗓️</div><p>No itinerary added yet. The admin can add days in the Admin panel.</p></div>';
+        return;
+      }
+      list.innerHTML = days.map(day => `
+        <div class="day-card">
+          <div class="day-number">
+            <span>${esc(String(day.day))}</span>DAY
+          </div>
+          <div class="day-content">
+            <h3>${esc(day.title || '')}</h3>
+            <div class="day-date">${formatDate(day.date)}</div>
+            ${day.notes ? `<div class="day-notes">${esc(day.notes)}</div>` : ''}
+            ${day.attractions && day.attractions.length ? `
+              <div class="attraction-tags">
+                ${day.attractions.map(a => `<span class="attraction-tag">📍 ${esc(a)}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `).join('');
+    } catch {
+      list.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load itinerary. Make sure the server is running.</p></div>';
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin — Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="reservations.html" class="nav-link">Reservations</a>
+  <a href="packing.html" class="nav-link">Packing</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin active">⚙ Admin</a>
+</nav>
+
+<main>
+  <div class="admin-header">
+    <div style="font-size:28px">⚙️</div>
+    <h1>Admin Panel</h1>
+    <span style="font-size:13px;opacity:.6">Edit trip content visible to all family members</span>
+  </div>
+
+  <div class="password-bar">
+    <label for="admin-password">Admin Password</label>
+    <input type="password" id="admin-password" placeholder="Enter password to save changes" style="max-width:260px">
+    <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Save All Changes</button>
+    <span id="save-status" class="save-status" style="display:none"></span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('trip')">🌍 Trip Info</button>
+    <button class="tab-btn" onclick="switchTab('itinerary')">🗓️ Itinerary</button>
+    <button class="tab-btn" onclick="switchTab('attractions')">📍 Attractions</button>
+    <button class="tab-btn" onclick="switchTab('reservations')">🎫 Reservations</button>
+    <button class="tab-btn" onclick="switchTab('packing')">🧳 Packing</button>
+  </div>
+
+  <!-- ── Trip Info ── -->
+  <div id="tab-trip" class="tab-panel active">
+    <div class="card">
+      <div class="form-group">
+        <label>Trip Name</label>
+        <input type="text" id="trip-name" placeholder="e.g. Family Paris Trip">
+      </div>
+      <div class="form-group">
+        <label>Destination</label>
+        <input type="text" id="trip-destination" placeholder="e.g. Paris, France">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" id="trip-start">
+        </div>
+        <div class="form-group">
+          <label>End Date</label>
+          <input type="date" id="trip-end">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="trip-description" placeholder="A short description shown on the home page…" rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Itinerary ── -->
+  <div id="tab-itinerary" class="tab-panel">
+    <div id="itinerary-items"></div>
+    <div class="add-item-row">
+      <button class="btn btn-ghost" onclick="addDay()">+ Add Day</button>
+    </div>
+  </div>
+
+  <!-- ── Attractions ── -->
+  <div id="tab-attractions" class="tab-panel">
+    <div id="attraction-items"></div>
+    <div class="add-item-row">
+      <button class="btn btn-ghost" onclick="addAttraction()">+ Add Attraction</button>
+    </div>
+  </div>
+
+  <!-- ── Reservations ── -->
+  <div id="tab-reservations" class="tab-panel">
+    <div id="reservation-items"></div>
+    <div class="add-item-row">
+      <button class="btn btn-ghost" onclick="addReservation()">+ Add Reservation</button>
+    </div>
+  </div>
+
+  <!-- ── Packing ── -->
+  <div id="tab-packing" class="tab-panel">
+    <div id="packing-items"></div>
+    <div class="add-item-row">
+      <button class="btn btn-ghost" onclick="addPackingCategory()">+ Add Category</button>
+    </div>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+let state = { trip: {}, itinerary: [], attractions: [], reservations: [], packing: [] };
+
+// ── Tab switching ─────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── Load data ─────────────────────────────────────
+async function loadData() {
+  try {
+    state = await loadTripData();
+    renderTripInfo();
+    renderItinerary();
+    renderAttractions();
+    renderReservations();
+    renderPacking();
+  } catch {
+    showStatus('Could not load data from server.', false);
+  }
+}
+
+// ── Collect state from DOM ────────────────────────
+function collectState() {
+  state.trip = {
+    name:        document.getElementById('trip-name').value.trim(),
+    destination: document.getElementById('trip-destination').value.trim(),
+    startDate:   document.getElementById('trip-start').value,
+    endDate:     document.getElementById('trip-end').value,
+    description: document.getElementById('trip-description').value.trim()
+  };
+  state.itinerary   = collectItinerary();
+  state.attractions = collectAttractions();
+  state.reservations = collectReservations();
+  state.packing     = collectPacking();
+}
+
+// ── Save all ──────────────────────────────────────
+async function saveAll() {
+  const password = document.getElementById('admin-password').value;
+  if (!password) { showStatus('Enter the admin password first.', false); return; }
+  collectState();
+  try {
+    const res = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password, ...state })
+    });
+    const json = await res.json();
+    if (!res.ok) { showStatus(json.error || 'Save failed.', false); return; }
+    showStatus('Saved successfully!', true);
+  } catch {
+    showStatus('Network error — could not save.', false);
+  }
+}
+
+function showStatus(msg, ok) {
+  const el = document.getElementById('save-status');
+  el.textContent = msg;
+  el.className = 'save-status ' + (ok ? 'success' : 'error');
+  el.style.display = '';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+// ── Trip Info ─────────────────────────────────────
+function renderTripInfo() {
+  const t = state.trip || {};
+  document.getElementById('trip-name').value        = t.name || '';
+  document.getElementById('trip-destination').value = t.destination || '';
+  document.getElementById('trip-start').value       = t.startDate || '';
+  document.getElementById('trip-end').value         = t.endDate || '';
+  document.getElementById('trip-description').value = t.description || '';
+}
+
+// ── Itinerary ─────────────────────────────────────
+function renderItinerary() {
+  const container = document.getElementById('itinerary-items');
+  container.innerHTML = '';
+  (state.itinerary || []).forEach((day, i) => container.appendChild(buildDayEl(day, i)));
+}
+
+function buildDayEl(day, i) {
+  const div = document.createElement('div');
+  div.className = 'admin-item';
+  div.dataset.index = i;
+  div.innerHTML = `
+    <div class="admin-item-header">
+      <span>Day ${i + 1}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeDay(${i})">Remove</button>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label>Day #</label>
+        <input type="text" class="day-num" value="${esc(String(day.day || (i+1)))}">
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" class="day-date" value="${esc(day.date || '')}">
+      </div>
+      <div class="form-group">
+        <label>Title</label>
+        <input type="text" class="day-title" value="${esc(day.title || '')}" placeholder="e.g. Arrival Day">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Notes</label>
+      <textarea class="day-notes" rows="3">${esc(day.notes || '')}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Attractions visited (comma-separated)</label>
+      <input type="text" class="day-attractions" value="${esc((day.attractions || []).join(', '))}" placeholder="Eiffel Tower, The Louvre">
+    </div>
+  `;
+  return div;
+}
+
+function addDay() {
+  state.itinerary = collectItinerary();
+  state.itinerary.push({ day: state.itinerary.length + 1, date: '', title: '', notes: '', attractions: [] });
+  renderItinerary();
+}
+
+function removeDay(i) {
+  state.itinerary = collectItinerary();
+  state.itinerary.splice(i, 1);
+  renderItinerary();
+}
+
+function collectItinerary() {
+  return [...document.querySelectorAll('#itinerary-items .admin-item')].map(el => ({
+    day:         parseInt(el.querySelector('.day-num').value) || 0,
+    date:        el.querySelector('.day-date').value,
+    title:       el.querySelector('.day-title').value.trim(),
+    notes:       el.querySelector('.day-notes').value.trim(),
+    attractions: el.querySelector('.day-attractions').value.split(',').map(s => s.trim()).filter(Boolean)
+  }));
+}
+
+// ── Attractions ───────────────────────────────────
+function renderAttractions() {
+  const container = document.getElementById('attraction-items');
+  container.innerHTML = '';
+  (state.attractions || []).forEach((a, i) => container.appendChild(buildAttractionEl(a, i)));
+}
+
+function buildAttractionEl(a, i) {
+  const div = document.createElement('div');
+  div.className = 'admin-item';
+  div.innerHTML = `
+    <div class="admin-item-header">
+      <span>${esc(a.name) || 'New Attraction'}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeAttraction(${i})">Remove</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="a-name" value="${esc(a.name || '')}" placeholder="Attraction name">
+      </div>
+      <div class="form-group">
+        <label>Website URL</label>
+        <input type="url" class="a-url" value="${esc(a.url || '')}" placeholder="https://…">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="a-desc" rows="2">${esc(a.description || '')}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="a-addr" value="${esc(a.address || '')}" placeholder="Street, City, Country">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" class="a-phone" value="${esc(a.phone || '')}" placeholder="+1 555 000 0000">
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+function addAttraction() {
+  state.attractions = collectAttractions();
+  state.attractions.push({ name: '', description: '', url: '', address: '', phone: '' });
+  renderAttractions();
+}
+
+function removeAttraction(i) {
+  state.attractions = collectAttractions();
+  state.attractions.splice(i, 1);
+  renderAttractions();
+}
+
+function collectAttractions() {
+  return [...document.querySelectorAll('#attraction-items .admin-item')].map(el => ({
+    name:        el.querySelector('.a-name').value.trim(),
+    description: el.querySelector('.a-desc').value.trim(),
+    url:         el.querySelector('.a-url').value.trim(),
+    address:     el.querySelector('.a-addr').value.trim(),
+    phone:       el.querySelector('.a-phone').value.trim()
+  }));
+}
+
+// ── Reservations ──────────────────────────────────
+function renderReservations() {
+  const container = document.getElementById('reservation-items');
+  container.innerHTML = '';
+  (state.reservations || []).forEach((r, i) => container.appendChild(buildReservationEl(r, i)));
+}
+
+function buildReservationEl(r, i) {
+  const types = ['flight', 'hotel', 'transport', 'other'];
+  const div = document.createElement('div');
+  div.className = 'admin-item';
+  div.innerHTML = `
+    <div class="admin-item-header">
+      <span>${esc(r.title) || 'New Reservation'}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeReservation(${i})">Remove</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Type</label>
+        <select class="r-type">
+          ${types.map(t => `<option value="${t}" ${r.type === t ? 'selected' : ''}>${t.charAt(0).toUpperCase() + t.slice(1)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" class="r-date" value="${esc(r.date || '')}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" class="r-title" value="${esc(r.title || '')}" placeholder="e.g. Flight AA 2841">
+    </div>
+    <div class="form-group">
+      <label>Details</label>
+      <textarea class="r-details" rows="2">${esc(r.details || '')}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Confirmation Number</label>
+      <input type="text" class="r-conf" value="${esc(r.confirmation || '')}" placeholder="Optional">
+    </div>
+  `;
+  return div;
+}
+
+function addReservation() {
+  state.reservations = collectReservations();
+  state.reservations.push({ type: 'flight', title: '', date: '', details: '', confirmation: '' });
+  renderReservations();
+}
+
+function removeReservation(i) {
+  state.reservations = collectReservations();
+  state.reservations.splice(i, 1);
+  renderReservations();
+}
+
+function collectReservations() {
+  return [...document.querySelectorAll('#reservation-items .admin-item')].map(el => ({
+    type:         el.querySelector('.r-type').value,
+    title:        el.querySelector('.r-title').value.trim(),
+    date:         el.querySelector('.r-date').value,
+    details:      el.querySelector('.r-details').value.trim(),
+    confirmation: el.querySelector('.r-conf').value.trim()
+  }));
+}
+
+// ── Packing ───────────────────────────────────────
+function renderPacking() {
+  const container = document.getElementById('packing-items');
+  container.innerHTML = '';
+  (state.packing || []).forEach((cat, i) => container.appendChild(buildPackingEl(cat, i)));
+}
+
+function buildPackingEl(cat, i) {
+  const div = document.createElement('div');
+  div.className = 'admin-item';
+  div.innerHTML = `
+    <div class="admin-item-header">
+      <span>${esc(cat.category) || 'New Category'}</span>
+      <button class="btn btn-danger btn-sm" onclick="removePacking(${i})">Remove</button>
+    </div>
+    <div class="form-group">
+      <label>Category Name</label>
+      <input type="text" class="p-cat" value="${esc(cat.category || '')}" placeholder="e.g. Clothing">
+    </div>
+    <div class="form-group">
+      <label>Items (one per line)</label>
+      <textarea class="p-items" rows="6">${esc((cat.items || []).join('\n'))}</textarea>
+    </div>
+  `;
+  return div;
+}
+
+function addPackingCategory() {
+  state.packing = collectPacking();
+  state.packing.push({ category: '', items: [] });
+  renderPacking();
+}
+
+function removePacking(i) {
+  state.packing = collectPacking();
+  state.packing.splice(i, 1);
+  renderPacking();
+}
+
+function collectPacking() {
+  return [...document.querySelectorAll('#packing-items .admin-item')].map(el => ({
+    category: el.querySelector('.p-cat').value.trim(),
+    items:    el.querySelector('.p-items').value.split('\n').map(s => s.trim()).filter(Boolean)
+  }));
+}
+
+// ── Init ──────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>

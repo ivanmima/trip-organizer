@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Reservations — Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="reservations.html" class="nav-link">Reservations</a>
+  <a href="packing.html" class="nav-link">Packing</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin">⚙ Admin</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>🎫 Reservations</h1>
+    <p>All confirmed bookings for your trip — flights, hotels, and transportation.</p>
+  </div>
+  <div id="reservations-container"><div class="loading">Loading reservations…</div></div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  const TYPE_META = {
+    flight:    { icon: '✈️',  label: 'Flights',        iconClass: 'res-icon-flight',    badgeClass: 'badge-flight' },
+    hotel:     { icon: '🏨',  label: 'Hotels',         iconClass: 'res-icon-hotel',     badgeClass: 'badge-hotel' },
+    transport: { icon: '🚌',  label: 'Transportation', iconClass: 'res-icon-transport', badgeClass: 'badge-transport' },
+    other:     { icon: '📋',  label: 'Other',          iconClass: 'res-icon-other',     badgeClass: 'badge-other' }
+  };
+
+  const ORDER = ['flight', 'hotel', 'transport', 'other'];
+
+  (async () => {
+    const container = document.getElementById('reservations-container');
+    try {
+      const data = await loadTripData();
+      const list = data.reservations || [];
+      if (!list.length) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">🎫</div><p>No reservations added yet. The admin can add them in the Admin panel.</p></div>';
+        return;
+      }
+
+      const grouped = {};
+      list.forEach(r => {
+        const key = TYPE_META[r.type] ? r.type : 'other';
+        (grouped[key] = grouped[key] || []).push(r);
+      });
+
+      container.innerHTML = ORDER.filter(k => grouped[k]).map(key => {
+        const meta = TYPE_META[key];
+        return `
+          <div class="reservation-section">
+            <h2>${meta.icon} ${meta.label}</h2>
+            ${grouped[key].map(r => `
+              <div class="reservation-item">
+                <div class="res-icon ${meta.iconClass}">${meta.icon}</div>
+                <div class="res-body">
+                  <h3>${esc(r.title)}</h3>
+                  ${r.date ? `<div class="res-date">📅 ${formatDate(r.date)}</div>` : ''}
+                  ${r.details ? `<div class="res-details">${esc(r.details)}</div>` : ''}
+                  ${r.confirmation ? `<span class="confirmation">✓ Confirmation: ${esc(r.confirmation)}</span>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }).join('');
+    } catch {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load reservations. Make sure the server is running.</p></div>';
+    }
+  })();
+</script>
+</body>
+</html>

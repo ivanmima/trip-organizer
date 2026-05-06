@@ -1,0 +1,220 @@
+{
+  "trip": {
+    "name": "Family Paris Trip",
+    "destination": "Paris, France",
+    "startDate": "2026-07-01",
+    "endDate": "2026-07-07",
+    "description": "Seven days exploring the magic of Paris — art, food, history, and unforgettable family memories!"
+  },
+  "itinerary": [
+    {
+      "day": 1,
+      "date": "2026-07-01",
+      "title": "Arrival & Settling In",
+      "notes": "Land at CDG at 10:00 AM. Take RER B train to city center (~40 min). Check into hotel. Rest, explore the neighborhood, dinner at a local bistro.",
+      "attractions": ["Champs-Élysées", "Arc de Triomphe"]
+    },
+    {
+      "day": 2,
+      "date": "2026-07-02",
+      "title": "Iconic Paris",
+      "notes": "Morning at the Eiffel Tower — book tickets in advance! Afternoon Seine River Cruise. Evening photos from Trocadéro.",
+      "attractions": ["Eiffel Tower", "Seine River Cruise"]
+    },
+    {
+      "day": 3,
+      "date": "2026-07-03",
+      "title": "Art & Culture",
+      "notes": "Full day at the Louvre. Focus on highlights: Mona Lisa, Venus de Milo, Winged Victory. Nearby Jardin des Tuileries for a picnic break.",
+      "attractions": ["The Louvre", "Jardin des Tuileries"]
+    },
+    {
+      "day": 4,
+      "date": "2026-07-04",
+      "title": "Montmartre & Versailles",
+      "notes": "Morning hike up Montmartre, visit Sacré-Cœur Basilica, browse artist studios. Afternoon: Palace of Versailles day trip (~1h by RER C).",
+      "attractions": ["Sacré-Cœur Basilica", "Palace of Versailles"]
+    },
+    {
+      "day": 5,
+      "date": "2026-07-05",
+      "title": "Notre-Dame & Impressionists",
+      "notes": "Visit the rebuilt Notre-Dame Cathedral. Walk along Île de la Cité and Île Saint-Louis. Afternoon at Musée d'Orsay.",
+      "attractions": ["Notre-Dame Cathedral", "Musée d'Orsay"]
+    },
+    {
+      "day": 6,
+      "date": "2026-07-06",
+      "title": "Shopping & Le Marais",
+      "notes": "Morning in Le Marais — boutiques, falafel at L'As du Fallafel. Afternoon shopping at Galeries Lafayette. Evening farewell dinner cruise.",
+      "attractions": ["Le Marais District", "Galeries Lafayette"]
+    },
+    {
+      "day": 7,
+      "date": "2026-07-07",
+      "title": "Departure Day",
+      "notes": "Check out by 11:00 AM. Light morning stroll in Luxembourg Gardens. Private transfer to CDG for afternoon flight home.",
+      "attractions": ["Luxembourg Gardens"]
+    }
+  ],
+  "attractions": [
+    {
+      "name": "Eiffel Tower",
+      "description": "Paris's iconic iron lattice tower offering breathtaking city views. Built 1887–1889 for the World's Fair. Book summit tickets well in advance.",
+      "url": "https://www.toureiffel.paris/en",
+      "address": "Champ de Mars, 5 Av. Anatole France, 75007 Paris",
+      "phone": "+33 8 92 70 12 39"
+    },
+    {
+      "name": "The Louvre",
+      "description": "World's largest art museum with over 35,000 works including the Mona Lisa and Venus de Milo. Allow a full day.",
+      "url": "https://www.louvre.fr/en",
+      "address": "Rue de Rivoli, 75001 Paris",
+      "phone": "+33 1 40 20 50 50"
+    },
+    {
+      "name": "Notre-Dame Cathedral",
+      "description": "Magnificent Gothic cathedral on Île de la Cité, recently reopened after the 2019 fire. Free entry, timed reservations recommended.",
+      "url": "https://www.notredamedeparis.fr/en/",
+      "address": "6 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris",
+      "phone": "+33 1 42 34 56 10"
+    },
+    {
+      "name": "Sacré-Cœur Basilica",
+      "description": "White domed basilica perched atop Montmartre hill with panoramic views over all of Paris. Free entry.",
+      "url": "https://www.sacre-coeur-montmartre.com/",
+      "address": "35 Rue du Chevalier de la Barre, 75018 Paris",
+      "phone": "+33 1 53 41 89 00"
+    },
+    {
+      "name": "Palace of Versailles",
+      "description": "Opulent royal château 20km from Paris. Explore the Hall of Mirrors and the stunning formal gardens. Book online.",
+      "url": "https://en.chateauversailles.fr/",
+      "address": "Place d'Armes, 78000 Versailles",
+      "phone": "+33 1 30 83 78 00"
+    },
+    {
+      "name": "Musée d'Orsay",
+      "description": "World's largest collection of Impressionist art, housed in a gorgeous converted 19th-century railway station.",
+      "url": "https://www.musee-orsay.fr/en",
+      "address": "1 Rue de la Légion d'Honneur, 75007 Paris",
+      "phone": "+33 1 40 49 48 14"
+    },
+    {
+      "name": "Seine River Cruise",
+      "description": "Bateaux Mouches boat tour along the Seine — see Paris's landmarks from the water in about 1 hour.",
+      "url": "https://www.bateaux-mouches.fr/en/",
+      "address": "Port de la Conférence, Pont de l'Alma, 75008 Paris",
+      "phone": "+33 1 42 25 96 10"
+    },
+    {
+      "name": "Champs-Élysées",
+      "description": "Paris's most famous avenue lined with shops, cafés, theaters, and iconic views of the Arc de Triomphe.",
+      "url": "https://www.champselysees-paris.com/",
+      "address": "Avenue des Champs-Élysées, 75008 Paris",
+      "phone": ""
+    },
+    {
+      "name": "Arc de Triomphe",
+      "description": "Monumental arch honoring those who fought for France, with a rooftop terrace and aerial views over 12 avenues.",
+      "url": "https://www.paris-arc-de-triomphe.fr/en/",
+      "address": "Pl. Charles de Gaulle, 75008 Paris",
+      "phone": "+33 1 55 37 73 77"
+    },
+    {
+      "name": "Le Marais District",
+      "description": "Historic neighborhood with medieval architecture, art galleries, trendy boutiques, and the best falafel in Paris.",
+      "url": "https://www.parisinfo.com/",
+      "address": "Le Marais, 75003–75004 Paris",
+      "phone": ""
+    },
+    {
+      "name": "Jardin des Tuileries",
+      "description": "Grand public garden between the Louvre and Place de la Concorde. Perfect for a picnic break and relaxing stroll.",
+      "url": "https://www.paris.fr/",
+      "address": "113 Rue de Rivoli, 75001 Paris",
+      "phone": ""
+    },
+    {
+      "name": "Luxembourg Gardens",
+      "description": "Beautiful formal gardens in the Latin Quarter — peaceful morning spot perfect before heading to the airport.",
+      "url": "https://www.senat.fr/visite/jardin/index.html",
+      "address": "75006 Paris",
+      "phone": ""
+    },
+    {
+      "name": "Galeries Lafayette",
+      "description": "Paris's most famous department store with a stunning Art Nouveau glass dome. Hundreds of brands on 8 floors.",
+      "url": "https://www.galerieslafayette.com/",
+      "address": "40 Bd Haussmann, 75009 Paris",
+      "phone": "+33 1 42 82 34 56"
+    }
+  ],
+  "reservations": [
+    {
+      "type": "flight",
+      "title": "Outbound Flight — AA 2841",
+      "date": "2026-07-01",
+      "details": "Departs JFK 11:00 PM (Jun 30) → Arrives CDG 1:15 PM (Jul 1). Non-stop, 7h 15m. Economy Plus seats 22A–22D.",
+      "confirmation": "XKMT92"
+    },
+    {
+      "type": "flight",
+      "title": "Return Flight — AA 2842",
+      "date": "2026-07-07",
+      "details": "Departs CDG 3:30 PM → Arrives JFK 5:45 PM. Non-stop, 8h 15m. Economy Plus seats 22A–22D.",
+      "confirmation": "XKMT93"
+    },
+    {
+      "type": "hotel",
+      "title": "Hôtel des Arts — Paris 9th",
+      "date": "2026-07-01",
+      "details": "Check-in July 1, Check-out July 7 (6 nights). Deluxe Family Room, 2 queen beds. Breakfast included daily.",
+      "confirmation": "HDA-20260701-4419"
+    },
+    {
+      "type": "transport",
+      "title": "CDG Airport → Hotel (Arrival)",
+      "date": "2026-07-01",
+      "details": "RER B Line from CDG Terminal 2 to Gare du Nord, then 10 min walk to hotel. Alternatively, taxi ~€55.",
+      "confirmation": ""
+    },
+    {
+      "type": "transport",
+      "title": "Hotel → CDG Airport (Departure)",
+      "date": "2026-07-07",
+      "details": "Pre-booked private transfer. G7 Taxi pickup at hotel 12:30 PM. Allow 1.5 hours to airport.",
+      "confirmation": "G7-4982761"
+    }
+  ],
+  "packing": [
+    {
+      "category": "Documents & Money",
+      "items": ["Passports (check expiry — needs 6+ months)", "Travel insurance documents", "Flight confirmation printouts", "Hotel reservation printout", "Credit cards (notify bank of travel dates)", "Euros — cash for markets & tips", "Emergency contact list"]
+    },
+    {
+      "category": "Clothing",
+      "items": ["T-shirts (5–7)", "Light long-sleeve shirt (2)", "Jeans or trousers (2)", "Comfortable walking shorts (2)", "Light jacket or cardigan", "Rain jacket", "Comfortable walking shoes (broken in!)", "Sandals", "Dress shoes for dinner", "Socks & underwear (7 pairs each)", "Pajamas"]
+    },
+    {
+      "category": "Toiletries",
+      "items": ["Toothbrushes & toothpaste", "Shampoo & conditioner", "Body wash/soap", "Deodorant", "Sunscreen SPF 30+", "Lip balm", "Moisturizer", "Razors", "Feminine hygiene products", "Nail clippers", "Hair ties & brush"]
+    },
+    {
+      "category": "Electronics",
+      "items": ["Smartphones & chargers", "Universal power adapter (EU plug — Type E/F)", "Portable battery bank", "Camera & memory cards", "Headphones/earbuds", "Kindle or tablet"]
+    },
+    {
+      "category": "Health & Medicine",
+      "items": ["Prescription medications (extra supply)", "Pain relievers (ibuprofen/acetaminophen)", "Antidiarrheal medication", "Antihistamines", "Motion sickness pills", "Band-aids & small first aid kit", "Hand sanitizer"]
+    },
+    {
+      "category": "Bags & Accessories",
+      "items": ["Day backpack for sightseeing", "Crossbody bag (pickpocket-resistant)", "Luggage locks", "Luggage tags with contact info", "Reusable water bottle", "Travel umbrella", "Sunglasses"]
+    },
+    {
+      "category": "Entertainment & Misc",
+      "items": ["Offline maps downloaded (Google Maps / Maps.me)", "Snacks for the flight", "Playing cards or travel games", "Pen for customs forms", "Earplugs for the flight"]
+    }
+  ]
+}

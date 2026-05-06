@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Packing List — Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="reservations.html" class="nav-link">Reservations</a>
+  <a href="packing.html" class="nav-link">Packing</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin">⚙ Admin</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>🧳 Packing List</h1>
+    <p>Check off items as you pack. Your progress is saved on this device.</p>
+  </div>
+
+  <div class="overall-progress" id="overall-progress" style="display:none">
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-label">Overall packing progress</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="progress-count" id="progress-count">0 / 0</div>
+  </div>
+
+  <div id="packing-grid" class="packing-grid">
+    <div class="loading" style="grid-column:1/-1">Loading packing list…</div>
+  </div>
+
+  <div style="margin-top:20px;text-align:right">
+    <button class="btn btn-secondary btn-sm" onclick="resetAll()">Reset all checkboxes</button>
+  </div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  const STORAGE_KEY = 'trip_packing_checked';
+  let checkedItems = {};
+  let allItems = [];
+
+  function loadChecked() {
+    try { checkedItems = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { checkedItems = {}; }
+  }
+
+  function saveChecked() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedItems));
+  }
+
+  function itemKey(catIndex, itemIndex) {
+    return `${catIndex}_${itemIndex}`;
+  }
+
+  function updateProgress() {
+    const total = allItems.length;
+    const done = Object.values(checkedItems).filter(Boolean).length;
+    document.getElementById('progress-count').textContent = `${done} / ${total}`;
+    document.getElementById('progress-fill').style.width = total ? `${Math.round(done / total * 100)}%` : '0%';
+    document.getElementById('overall-progress').style.display = total ? '' : 'none';
+  }
+
+  function toggleItem(catIndex, itemIndex, el) {
+    const key = itemKey(catIndex, itemIndex);
+    checkedItems[key] = !checkedItems[key];
+    saveChecked();
+    const li = el.closest('.packing-item');
+    li.classList.toggle('checked', checkedItems[key]);
+    el.checked = checkedItems[key];
+    const card = li.closest('.packing-card');
+    updateCategoryProgress(card, catIndex);
+    updateProgress();
+  }
+
+  function updateCategoryProgress(card, catIndex) {
+    const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+    const total = checkboxes.length;
+    const done = [...checkboxes].filter(c => c.checked).length;
+    const prog = card.querySelector('.packing-progress');
+    prog.textContent = `${done}/${total}`;
+    prog.className = 'packing-progress' + (done === total && total > 0 ? ' done' : '');
+  }
+
+  function resetAll() {
+    if (!confirm('Reset all checkboxes for this device?')) return;
+    checkedItems = {};
+    saveChecked();
+    document.querySelectorAll('input[type="checkbox"]').forEach(c => {
+      c.checked = false;
+      c.closest('.packing-item').classList.remove('checked');
+    });
+    document.querySelectorAll('.packing-card').forEach((card, i) => updateCategoryProgress(card, i));
+    updateProgress();
+  }
+
+  (async () => {
+    loadChecked();
+    const grid = document.getElementById('packing-grid');
+    try {
+      const data = await loadTripData();
+      const cats = data.packing || [];
+      if (!cats.length) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🧳</div><p>No packing list added yet. The admin can add categories in the Admin panel.</p></div>';
+        return;
+      }
+
+      allItems = cats.flatMap((cat, ci) => (cat.items || []).map((_, ii) => itemKey(ci, ii)));
+
+      grid.innerHTML = cats.map((cat, ci) => {
+        const items = cat.items || [];
+        const checkedCount = items.filter((_, ii) => checkedItems[itemKey(ci, ii)]).length;
+        return `
+          <div class="packing-card">
+            <div class="packing-card-header">
+              <h3>${esc(cat.category)}</h3>
+              <span class="packing-progress${checkedCount === items.length && items.length > 0 ? ' done' : ''}">${checkedCount}/${items.length}</span>
+            </div>
+            ${items.map((item, ii) => {
+              const key = itemKey(ci, ii);
+              const checked = !!checkedItems[key];
+              return `
+                <div class="packing-item${checked ? ' checked' : ''}">
+                  <input type="checkbox" id="item-${ci}-${ii}" ${checked ? 'checked' : ''} onchange="toggleItem(${ci}, ${ii}, this)">
+                  <label for="item-${ci}-${ii}">${esc(item)}</label>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }).join('');
+
+      updateProgress();
+    } catch {
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚠️</div><p>Could not load packing list. Make sure the server is running.</p></div>';
+    }
+  })();
+</script>
+</body>
+</html>

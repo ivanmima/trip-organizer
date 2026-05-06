@@ -1,0 +1,12 @@
+{
+  "name": "Trip Organizer",
+  "short_name": "Trip",
+  "description": "Family trip planning — itinerary, attractions, reservations, and packing list.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1D4ED8",
+  "theme_color": "#1D4ED8",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
