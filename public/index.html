@@ -25,12 +25,6 @@
 </nav>
 
 <main>
-  <div id="hero" class="trip-hero">
-    <h1 id="tripName">Loading…</h1>
-    <div class="destination" id="destination"></div>
-    <div class="dates" id="dates"></div>
-  </div>
-
   <div style="margin-bottom:28px;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-md)">
     <img src="/Family.jpg" alt="Family photo" style="width:100%;display:block;max-height:420px;object-fit:cover">
   </div>
@@ -67,14 +61,7 @@
     try {
       const data = await loadTripData();
       const t = data.trip || {};
-      document.title = (t.name || 'Trip') + ' — Organizer';
-      document.getElementById('tripName').textContent = t.name || 'Family Trip';
-      document.getElementById('destination').textContent = t.destination || '';
-      if (t.startDate && t.endDate) {
-        const nights = Math.round((new Date(t.endDate) - new Date(t.startDate)) / 86400000);
-        document.getElementById('dates').textContent =
-          formatDateShort(t.startDate) + ' – ' + formatDateShort(t.endDate) + ` (${nights} nights)`;
-      }
+      document.title = (t.name || 'Family Reunion') + ' — Organizer';
       document.getElementById('description').textContent = t.description || '';
     } catch {
       document.getElementById('tripName').textContent = 'Trip Organizer';
