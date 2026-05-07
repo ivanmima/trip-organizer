@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Flights — Trip Organizer</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1D4ED8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Trip">
+  <link rel="apple-touch-icon" href="/icon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-brand">✈️ Trip Organizer</a>
+  <a href="index.html" class="nav-link">Home</a>
+  <a href="itinerary.html" class="nav-link">Itinerary</a>
+  <a href="attractions.html" class="nav-link">Attractions</a>
+  <a href="flights.html" class="nav-link">Flights</a>
+  <div class="nav-spacer"></div>
+  <a href="admin.html" class="nav-link nav-admin">⚙ Admin</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>✈️ Flights</h1>
+    <p>All flight reservations by traveler.</p>
+  </div>
+  <div id="flights-container"><div class="loading">Loading flights…</div></div>
+</main>
+
+<script src="app.js"></script>
+<script>
+  (async () => {
+    const container = document.getElementById('flights-container');
+    try {
+      const data = await loadTripData();
+      const flights = data.flights || [];
+      if (!flights.length) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">✈️</div><p>No flights added yet. The admin can add them in the Admin panel.</p></div>';
+        return;
+      }
+
+      const grouped = {};
+      flights.forEach(f => {
+        const key = f.traveler || 'Unassigned';
+        (grouped[key] = grouped[key] || []).push(f);
+      });
+
+      container.innerHTML = Object.entries(grouped).map(([traveler, tFlights]) => `
+        <div class="traveler-section">
+          <div class="traveler-heading">👤 ${esc(traveler)}</div>
+          ${tFlights.map(f => `
+            <div class="flight-card">
+              <div class="flight-route">
+                <div class="airport">
+                  <div class="airport-code">${esc(f.from)}</div>
+                  <div class="airport-time">${esc(f.departureTime)}</div>
+                </div>
+                <div class="route-line">
+                  <div class="route-arrow"><span>✈</span></div>
+                  <div class="flight-num">${esc(f.flightNumber)}</div>
+                </div>
+                <div class="airport">
+                  <div class="airport-code">${esc(f.to)}</div>
+                  <div class="airport-time">${esc(f.arrivalTime)}</div>
+                </div>
+              </div>
+              <div class="flight-details">
+                <div class="flight-detail">📅 <strong>${formatDateShort(f.date)}</strong></div>
+                ${f.confirmation ? `<span class="confirmation">✓ ${esc(f.confirmation)}</span>` : ''}
+                ${f.notes ? `<div class="flight-detail">💬 ${esc(f.notes)}</div>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+    } catch {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Could not load flights. Make sure the server is running.</p></div>';
+    }
+  })();
+</script>
+</body>
+</html>

@@ -150,71 +150,28 @@
       "phone": "+33 1 42 82 34 56"
     }
   ],
-  "reservations": [
+  "flights": [
     {
-      "type": "flight",
-      "title": "Outbound Flight — AA 2841",
-      "date": "2026-07-01",
-      "details": "Departs JFK 11:00 PM (Jun 30) → Arrives CDG 1:15 PM (Jul 1). Non-stop, 7h 15m. Economy Plus seats 22A–22D.",
-      "confirmation": "XKMT92"
+      "traveler": "Ivan",
+      "flightNumber": "AA 2841",
+      "date": "2026-06-30",
+      "from": "JFK",
+      "departureTime": "11:00 PM",
+      "to": "CDG",
+      "arrivalTime": "1:15 PM+1",
+      "confirmation": "XKMT92",
+      "notes": "Non-stop, 7h 15m"
     },
     {
-      "type": "flight",
-      "title": "Return Flight — AA 2842",
+      "traveler": "Ivan",
+      "flightNumber": "AA 2842",
       "date": "2026-07-07",
-      "details": "Departs CDG 3:30 PM → Arrives JFK 5:45 PM. Non-stop, 8h 15m. Economy Plus seats 22A–22D.",
-      "confirmation": "XKMT93"
-    },
-    {
-      "type": "hotel",
-      "title": "Hôtel des Arts — Paris 9th",
-      "date": "2026-07-01",
-      "details": "Check-in July 1, Check-out July 7 (6 nights). Deluxe Family Room, 2 queen beds. Breakfast included daily.",
-      "confirmation": "HDA-20260701-4419"
-    },
-    {
-      "type": "transport",
-      "title": "CDG Airport → Hotel (Arrival)",
-      "date": "2026-07-01",
-      "details": "RER B Line from CDG Terminal 2 to Gare du Nord, then 10 min walk to hotel. Alternatively, taxi ~€55.",
-      "confirmation": ""
-    },
-    {
-      "type": "transport",
-      "title": "Hotel → CDG Airport (Departure)",
-      "date": "2026-07-07",
-      "details": "Pre-booked private transfer. G7 Taxi pickup at hotel 12:30 PM. Allow 1.5 hours to airport.",
-      "confirmation": "G7-4982761"
-    }
-  ],
-  "packing": [
-    {
-      "category": "Documents & Money",
-      "items": ["Passports (check expiry — needs 6+ months)", "Travel insurance documents", "Flight confirmation printouts", "Hotel reservation printout", "Credit cards (notify bank of travel dates)", "Euros — cash for markets & tips", "Emergency contact list"]
-    },
-    {
-      "category": "Clothing",
-      "items": ["T-shirts (5–7)", "Light long-sleeve shirt (2)", "Jeans or trousers (2)", "Comfortable walking shorts (2)", "Light jacket or cardigan", "Rain jacket", "Comfortable walking shoes (broken in!)", "Sandals", "Dress shoes for dinner", "Socks & underwear (7 pairs each)", "Pajamas"]
-    },
-    {
-      "category": "Toiletries",
-      "items": ["Toothbrushes & toothpaste", "Shampoo & conditioner", "Body wash/soap", "Deodorant", "Sunscreen SPF 30+", "Lip balm", "Moisturizer", "Razors", "Feminine hygiene products", "Nail clippers", "Hair ties & brush"]
-    },
-    {
-      "category": "Electronics",
-      "items": ["Smartphones & chargers", "Universal power adapter (EU plug — Type E/F)", "Portable battery bank", "Camera & memory cards", "Headphones/earbuds", "Kindle or tablet"]
-    },
-    {
-      "category": "Health & Medicine",
-      "items": ["Prescription medications (extra supply)", "Pain relievers (ibuprofen/acetaminophen)", "Antidiarrheal medication", "Antihistamines", "Motion sickness pills", "Band-aids & small first aid kit", "Hand sanitizer"]
-    },
-    {
-      "category": "Bags & Accessories",
-      "items": ["Day backpack for sightseeing", "Crossbody bag (pickpocket-resistant)", "Luggage locks", "Luggage tags with contact info", "Reusable water bottle", "Travel umbrella", "Sunglasses"]
-    },
-    {
-      "category": "Entertainment & Misc",
-      "items": ["Offline maps downloaded (Google Maps / Maps.me)", "Snacks for the flight", "Playing cards or travel games", "Pen for customs forms", "Earplugs for the flight"]
+      "from": "CDG",
+      "departureTime": "3:30 PM",
+      "to": "JFK",
+      "arrivalTime": "5:45 PM",
+      "confirmation": "XKMT93",
+      "notes": "Non-stop, 8h 15m"
     }
   ]
 }

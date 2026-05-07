@@ -197,6 +197,12 @@ textarea { resize: vertical; min-height: 80px; }
   gap: 16px;
 }
 
+.form-row-4 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+
 /* ── Home page ──────────────────────────────────── */
 .trip-hero {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -330,51 +336,108 @@ textarea { resize: vertical; min-height: 80px; }
 .meta-row a { color: var(--primary); text-decoration: none; }
 .meta-row a:hover { text-decoration: underline; }
 
-/* ── Reservations ───────────────────────────────── */
-.reservation-section { margin-bottom: 32px; }
-.reservation-section h2 {
-  font-size: 15px;
+/* ── Flights ────────────────────────────────────── */
+.traveler-section { margin-bottom: 36px; }
+
+.traveler-heading {
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: .6px;
+  letter-spacing: .7px;
   color: var(--text-muted);
   margin-bottom: 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
-.reservation-item {
+.traveler-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.flight-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 20px 24px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  display: flex;
-  gap: 16px;
   margin-bottom: 12px;
 }
 
-.res-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius);
+.flight-route {
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 22px;
+  gap: 16px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
 }
 
-.res-icon-flight { background: #DBEAFE; }
-.res-icon-hotel  { background: #D1FAE5; }
-.res-icon-transport { background: #FEF3C7; }
-.res-icon-other  { background: #F3E8FF; }
+.airport { text-align: center; }
 
-.res-body { flex: 1; min-width: 0; }
-.res-body h3 { font-size: 15px; margin-bottom: 4px; }
-.res-body .res-date { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
-.res-body .res-details { font-size: 13px; color: #334155; line-height: 1.6; margin-bottom: 8px; }
+.airport-code {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.airport-time {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.route-line {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.route-arrow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.route-arrow::before,
+.route-arrow::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+}
+
+.flight-num {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: .3px;
+}
+
+.flight-details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.flight-detail {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.flight-detail strong { color: var(--text); }
 
 .confirmation {
   display: inline-flex;
@@ -387,105 +450,6 @@ textarea { resize: vertical; min-height: 80px; }
   border: 1px solid #BBF7D0;
   padding: 3px 10px;
   border-radius: 20px;
-}
-
-/* ── Packing ────────────────────────────────────── */
-.packing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
-}
-
-.packing-card {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.packing-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.packing-card-header h3 { font-size: 15px; }
-.packing-progress {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.packing-progress.done { color: var(--success); }
-
-.packing-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 6px 0;
-  font-size: 13px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background .1s;
-}
-
-.packing-item:hover { background: var(--bg); padding-left: 4px; padding-right: 4px; margin: 0 -4px; }
-
-.packing-item input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  margin-top: 2px;
-  flex-shrink: 0;
-  cursor: pointer;
-  accent-color: var(--primary);
-}
-
-.packing-item.checked label { text-decoration: line-through; color: var(--text-muted); }
-.packing-item label { cursor: pointer; flex: 1; }
-
-.overall-progress {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 20px 24px;
-  margin-bottom: 24px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.progress-bar-wrap { flex: 1; }
-.progress-bar-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-
-.progress-bar-bg {
-  background: var(--border);
-  border-radius: 20px;
-  height: 10px;
-  overflow: hidden;
-}
-
-.progress-bar-fill {
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  height: 100%;
-  border-radius: 20px;
-  transition: width .4s ease;
-}
-
-.progress-count {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--primary);
-  white-space: nowrap;
 }
 
 /* ── Admin ──────────────────────────────────────── */
@@ -607,9 +571,10 @@ textarea { resize: vertical; min-height: 80px; }
   nav { height: auto; padding: 12px 16px; gap: 6px; }
   main { padding: 20px 16px 40px; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
-  .attractions-grid, .packing-grid, .features-grid { grid-template-columns: 1fr; }
+  .attractions-grid, .features-grid { grid-template-columns: 1fr; }
   .day-card { flex-direction: column; }
-  .reservation-item { flex-direction: column; }
+  .flight-route { gap: 8px; }
+  .airport-code { font-size: 20px; }
   .tabs { flex-wrap: wrap; }
   .tab-btn { flex: none; width: calc(50% - 2px); }
   .trip-hero h1 { font-size: 22px; }
