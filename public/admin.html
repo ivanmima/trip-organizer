@@ -330,9 +330,15 @@ function buildRestaurantEl(r, i) {
       <span>${esc(r.name) || 'New Restaurant'}</span>
       <button class="btn btn-danger btn-sm" onclick="removeRestaurant(${i})">Remove</button>
     </div>
-    <div class="form-group">
-      <label>Restaurant Name</label>
-      <input type="text" class="r-name" value="${esc(r.name || '')}" placeholder="e.g. Nobu Malibu">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Restaurant Name</label>
+        <input type="text" class="r-name" value="${esc(r.name || '')}" placeholder="e.g. Nobu Malibu">
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input type="text" class="r-cat" value="${esc(r.category || '')}" placeholder="e.g. Japanese, Italian">
+      </div>
     </div>
     <div class="form-group">
       <label>Description</label>
@@ -367,6 +373,7 @@ function removeRestaurant(i) {
 function collectRestaurants() {
   return [...document.querySelectorAll('#restaurant-items .admin-item')].map(el => ({
     name:        el.querySelector('.r-name').value.trim(),
+    category:    el.querySelector('.r-cat').value.trim(),
     description: el.querySelector('.r-desc').value.trim(),
     address:     el.querySelector('.r-addr').value.trim(),
     phone:       el.querySelector('.r-phone').value.trim()

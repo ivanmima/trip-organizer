@@ -153,24 +153,28 @@
   "restaurants": [
     {
       "name": "Nobu Malibu",
+      "category": "Japanese",
       "description": "World-famous Japanese-Peruvian fusion on the Malibu coast. Known for black cod miso and fresh sashimi.",
       "address": "22706 Pacific Coast Hwy, Malibu, CA 90265",
       "phone": "(310) 317-9140"
     },
     {
       "name": "Bestia",
+      "category": "Italian",
       "description": "Bustling Italian-inspired spot in the Arts District. Exceptional house-made pasta, pizzas, and charcuterie.",
       "address": "2121 E 7th Pl, Los Angeles, CA 90021",
       "phone": "(213) 514-5724"
     },
     {
       "name": "Guelaguetza",
+      "category": "Mexican",
       "description": "LA's beloved Oaxacan restaurant. Try the mole negro, tlayudas, and mezcal cocktails.",
       "address": "3014 W Olympic Blvd, Los Angeles, CA 90006",
       "phone": "(213) 427-0608"
     },
     {
       "name": "In-N-Out Burger",
+      "category": "Burgers",
       "description": "The classic California burger experience. Order Animal Style — you'll thank us later.",
       "address": "922 Gayley Ave, Los Angeles, CA 90024",
       "phone": "(800) 786-1000"

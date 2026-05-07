@@ -47,7 +47,10 @@
       }
       grid.innerHTML = list.map(r => `
         <div class="attraction-card">
-          <h3>${esc(r.name)}</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <h3>${esc(r.name)}</h3>
+            ${r.category ? `<span class="attraction-tag">${esc(r.category)}</span>` : ''}
+          </div>
           ${r.description ? `<p class="description">${esc(r.description)}</p>` : ''}
           <div class="attraction-meta">
             ${r.address ? `
