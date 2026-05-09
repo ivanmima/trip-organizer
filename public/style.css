@@ -19,25 +19,28 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { background: var(--primary); }
+
 body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
   line-height: 1.6;
+  padding-top: env(safe-area-inset-top);
 }
 
 /* ── Navigation ────────────────────────────────── */
 nav {
   background: var(--primary);
-  padding: env(safe-area-inset-top) 24px 0;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   gap: 4px;
-  min-height: calc(60px + env(safe-area-inset-top));
+  height: 60px;
   box-shadow: var(--shadow-md);
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top);
   z-index: 100;
   flex-wrap: wrap;
 }
@@ -641,7 +644,7 @@ textarea { resize: vertical; min-height: 80px; }
 /* ── Responsive ─────────────────────────────────── */
 @media (max-width: 768px) {
   /* Top nav: brand + admin icon only */
-  nav { min-height: calc(52px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 16px 0; }
+  nav { height: 52px; padding: 0 16px; }
   nav .nav-link:not(.nav-admin) { display: none; }
   .nav-admin { min-height: 44px; display: flex; align-items: center; }
   .nav-brand {
