@@ -147,6 +147,45 @@ h3 { font-size: 16px; font-weight: 600; }
 .badge-transport { background: #FEF3C7; color: #92400E; }
 .badge-other  { background: #F3E8FF; color: #6B21A8; }
 
+/* ── Checkbox pills ─────────────────────────────── */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+.checkbox-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  transition: background .15s, border-color .15s, color .15s;
+  user-select: none;
+}
+
+.checkbox-pill:hover { background: var(--bg); border-color: #C2410C; }
+
+.checkbox-pill input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  accent-color: #C2410C;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-pill:has(input:checked) {
+  background: #FFF7ED;
+  border-color: #C2410C;
+  color: #C2410C;
+  font-weight: 600;
+}
+
 /* ── Form elements ──────────────────────────────── */
 .form-group { margin-bottom: 16px; }
 .form-group label {

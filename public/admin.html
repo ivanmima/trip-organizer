@@ -225,8 +225,17 @@ function buildDayEl(day, i) {
       <input type="text" class="day-attractions" value="${esc((day.attractions || []).join(', '))}" placeholder="Eiffel Tower, The Louvre">
     </div>
     <div class="form-group">
-      <label>Restaurants (comma-separated)</label>
-      <input type="text" class="day-restaurants" value="${esc((day.restaurants || []).join(', '))}" placeholder="Nobu Malibu, Bestia">
+      <label>Restaurants</label>
+      ${state.restaurants && state.restaurants.length ? `
+        <div class="checkbox-group">
+          ${state.restaurants.map(r => `
+            <label class="checkbox-pill">
+              <input type="checkbox" class="day-rest-check" value="${esc(r.name)}" ${(day.restaurants || []).includes(r.name) ? 'checked' : ''}>
+              ${esc(r.name)}
+            </label>
+          `).join('')}
+        </div>
+      ` : '<p style="font-size:13px;color:var(--text-muted);padding:4px 0">No restaurants yet — add them in the Restaurants tab first.</p>'}
     </div>
   `;
   return div;
@@ -251,7 +260,7 @@ function collectItinerary() {
     title:       el.querySelector('.day-title').value.trim(),
     notes:       el.querySelector('.day-notes').value.trim(),
     attractions: el.querySelector('.day-attractions').value.split(',').map(s => s.trim()).filter(Boolean),
-    restaurants: el.querySelector('.day-restaurants').value.split(',').map(s => s.trim()).filter(Boolean)
+    restaurants: [...el.querySelectorAll('.day-rest-check:checked')].map(cb => cb.value)
   }));
 }
 
