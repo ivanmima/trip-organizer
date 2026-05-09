@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Attractions — Trip Organizer</title>
+  <title>Hotels — Family Reunion</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#1D4ED8">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -27,53 +27,47 @@
 
 <main>
   <div class="page-header">
-    <h1>📍 Attractions</h1>
-    <p>All the places you'll visit — with websites, addresses, and phone numbers.</p>
+    <h1>🏨 Hotels</h1>
+    <p>Where we're staying during the reunion.</p>
   </div>
-  <div id="attractions-grid" class="attractions-grid">
-    <div class="loading" style="grid-column:1/-1">Loading attractions…</div>
+  <div id="hotels-grid" class="attractions-grid">
+    <div class="loading" style="grid-column:1/-1">Loading hotels…</div>
   </div>
 </main>
 
 <script src="app.js"></script>
 <script>
   (async () => {
-    const grid = document.getElementById('attractions-grid');
+    const grid = document.getElementById('hotels-grid');
     try {
       const data = await loadTripData();
-      const list = data.attractions || [];
+      const list = data.hotels || [];
       if (!list.length) {
-        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📍</div><p>No attractions added yet. The admin can add them in the Admin panel.</p></div>';
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🏨</div><p>No hotels added yet. The admin can add them in the Admin panel.</p></div>';
         return;
       }
-      grid.innerHTML = list.map(a => `
+      grid.innerHTML = list.map(h => `
         <div class="attraction-card">
-          <h3>${esc(a.name)}</h3>
-          ${a.description ? `<p class="description">${esc(a.description)}</p>` : ''}
+          <h3>${esc(h.name)}</h3>
+          ${h.description ? `<p class="description">${esc(h.description)}</p>` : ''}
           <div class="attraction-meta">
-            ${a.url ? `
-              <div class="meta-row">
-                <span class="icon">🌐</span>
-                <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.url.replace(/^https?:\/\//, ''))}</a>
-              </div>
-            ` : ''}
-            ${a.address ? `
+            ${h.address ? `
               <div class="meta-row">
                 <span class="icon">📌</span>
-                <span>${esc(a.address)}</span>
+                <span>${esc(h.address)}</span>
               </div>
             ` : ''}
-            ${a.phone ? `
+            ${h.phone ? `
               <div class="meta-row">
                 <span class="icon">📞</span>
-                <a href="tel:${esc(a.phone)}">${esc(a.phone)}</a>
+                <a href="tel:${esc(h.phone)}">${esc(h.phone)}</a>
               </div>
             ` : ''}
           </div>
         </div>
       `).join('');
     } catch {
-      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚠️</div><p>Could not load attractions. Make sure the server is running.</p></div>';
+      grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">⚠️</div><p>Could not load hotels. Make sure the server is running.</p></div>';
     }
   })();
 </script>

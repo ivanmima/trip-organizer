@@ -180,6 +180,14 @@
       "phone": "(800) 786-1000"
     }
   ],
+  "hotels": [
+    {
+      "name": "Courtyard by Marriott LA Hacienda Heights/Orange County",
+      "description": "Modern hotel in Hacienda Heights featuring comfortable rooms, an outdoor pool, fitness center, and on-site dining. Conveniently located near major freeways with easy access to LA and Orange County attractions.",
+      "address": "1905 S Azusa Ave, Hacienda Heights, CA 91745",
+      "phone": "(626) 369-7299"
+    }
+  ],
   "flights": [
     {
       "traveler": "Ivan",

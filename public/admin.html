@@ -19,6 +19,7 @@
   <a href="itinerary.html" class="nav-link">Itinerary</a>
   <a href="attractions.html" class="nav-link">Attractions</a>
   <a href="restaurants.html" class="nav-link">Restaurants</a>
+  <a href="hotels.html" class="nav-link">Hotels</a>
   <a href="flights.html" class="nav-link">Flights</a>
   <div class="nav-spacer"></div>
   <a href="admin.html" class="nav-link nav-admin active">⚙ Admin</a>
@@ -43,6 +44,7 @@
     <button class="tab-btn" onclick="switchTab('itinerary', this)">🗓️ Itinerary</button>
     <button class="tab-btn" onclick="switchTab('attractions', this)">📍 Attractions</button>
     <button class="tab-btn" onclick="switchTab('restaurants', this)">🍽️ Restaurants</button>
+    <button class="tab-btn" onclick="switchTab('hotels', this)">🏨 Hotels</button>
     <button class="tab-btn" onclick="switchTab('flights', this)">✈️ Flights</button>
   </div>
 
@@ -98,6 +100,14 @@
     </div>
   </div>
 
+  <!-- ── Hotels ── -->
+  <div id="tab-hotels" class="tab-panel">
+    <div id="hotel-items"></div>
+    <div class="add-item-row">
+      <button class="btn btn-ghost" onclick="addHotel()">+ Add Hotel</button>
+    </div>
+  </div>
+
   <!-- ── Flights ── -->
   <div id="tab-flights" class="tab-panel">
     <div id="flight-items"></div>
@@ -116,7 +126,7 @@
 
 <script src="app.js"></script>
 <script>
-let state = { trip: {}, itinerary: [], attractions: [], restaurants: [], flights: [] };
+let state = { trip: {}, itinerary: [], attractions: [], restaurants: [], hotels: [], flights: [] };
 
 // ── Tab switching ─────────────────────────────────
 function switchTab(name, btn) {
@@ -131,11 +141,13 @@ async function loadData() {
   try {
     state = await loadTripData();
     state.restaurants = state.restaurants || [];
+    state.hotels = state.hotels || [];
     state.flights = state.flights || [];
     renderTripInfo();
     renderItinerary();
     renderAttractions();
     renderRestaurants();
+    renderHotels();
     renderFlights();
   } catch {
     showStatus('Could not load data from server.', false);
@@ -154,6 +166,7 @@ function collectState() {
   state.itinerary   = collectItinerary();
   state.attractions = collectAttractions();
   state.restaurants = collectRestaurants();
+  state.hotels      = collectHotels();
   state.flights     = collectFlights();
 }
 
@@ -405,6 +418,64 @@ function collectRestaurants() {
     description: el.querySelector('.r-desc').value.trim(),
     address:     el.querySelector('.r-addr').value.trim(),
     phone:       el.querySelector('.r-phone').value.trim()
+  }));
+}
+
+// ── Hotels ────────────────────────────────────────
+function renderHotels() {
+  const container = document.getElementById('hotel-items');
+  container.innerHTML = '';
+  (state.hotels || []).forEach((h, i) => container.appendChild(buildHotelEl(h, i)));
+}
+
+function buildHotelEl(h, i) {
+  const div = document.createElement('div');
+  div.className = 'admin-item';
+  div.innerHTML = `
+    <div class="admin-item-header">
+      <span>${esc(h.name) || 'New Hotel'}</span>
+      <button class="btn btn-danger btn-sm" onclick="removeHotel(${i})">Remove</button>
+    </div>
+    <div class="form-group">
+      <label>Hotel Name</label>
+      <input type="text" class="h-name" value="${esc(h.name || '')}" placeholder="e.g. Courtyard by Marriott">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea class="h-desc" rows="2">${esc(h.description || '')}</textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Address</label>
+        <input type="text" class="h-addr" value="${esc(h.address || '')}" placeholder="Street, City, State">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" class="h-phone" value="${esc(h.phone || '')}" placeholder="+1 555 000 0000">
+      </div>
+    </div>
+  `;
+  return div;
+}
+
+function addHotel() {
+  state.hotels = collectHotels();
+  state.hotels.push({ name: '', description: '', address: '', phone: '' });
+  renderHotels();
+}
+
+function removeHotel(i) {
+  state.hotels = collectHotels();
+  state.hotels.splice(i, 1);
+  renderHotels();
+}
+
+function collectHotels() {
+  return [...document.querySelectorAll('#hotel-items .admin-item')].map(el => ({
+    name:        el.querySelector('.h-name').value.trim(),
+    description: el.querySelector('.h-desc').value.trim(),
+    address:     el.querySelector('.h-addr').value.trim(),
+    phone:       el.querySelector('.h-phone').value.trim()
   }));
 }
 
