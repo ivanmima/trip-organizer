@@ -30,11 +30,11 @@ body {
 /* ── Navigation ────────────────────────────────── */
 nav {
   background: var(--primary);
-  padding: 0 24px;
+  padding: env(safe-area-inset-top) 24px 0;
   display: flex;
   align-items: center;
   gap: 4px;
-  height: 60px;
+  min-height: calc(60px + env(safe-area-inset-top));
   box-shadow: var(--shadow-md);
   position: sticky;
   top: 0;
@@ -641,7 +641,7 @@ textarea { resize: vertical; min-height: 80px; }
 /* ── Responsive ─────────────────────────────────── */
 @media (max-width: 768px) {
   /* Top nav: brand + admin icon only */
-  nav { height: 52px; padding: 0 16px; }
+  nav { min-height: calc(52px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) 16px 0; }
   nav .nav-link:not(.nav-admin) { display: none; }
   .nav-admin { min-height: 44px; display: flex; align-items: center; }
   .nav-brand {
