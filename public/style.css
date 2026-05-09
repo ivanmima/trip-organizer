@@ -644,6 +644,13 @@ textarea { resize: vertical; min-height: 80px; }
   nav { height: 52px; padding: 0 16px; }
   nav .nav-link:not(.nav-admin) { display: none; }
   .nav-admin { min-height: 44px; display: flex; align-items: center; }
+  .nav-brand {
+    font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 80px);
+  }
 
   /* Bottom nav */
   .bottom-nav {
