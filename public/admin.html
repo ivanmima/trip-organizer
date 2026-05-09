@@ -105,6 +105,13 @@
       <button class="btn btn-ghost" onclick="addFlight()">+ Add Flight</button>
     </div>
   </div>
+
+  <div class="password-bar" style="margin-top:24px;margin-bottom:0">
+    <label for="admin-password-bottom">Admin Password</label>
+    <input type="password" id="admin-password-bottom" placeholder="Enter password to save changes" style="max-width:260px">
+    <button class="btn btn-primary btn-sm" onclick="saveAll()">💾 Save All Changes</button>
+    <span id="save-status-bottom" class="save-status" style="display:none"></span>
+  </div>
 </main>
 
 <script src="app.js"></script>
@@ -152,7 +159,8 @@ function collectState() {
 
 // ── Save all ──────────────────────────────────────
 async function saveAll() {
-  const password = document.getElementById('admin-password').value;
+  const password = document.getElementById('admin-password').value ||
+                   document.getElementById('admin-password-bottom').value;
   if (!password) { showStatus('Enter the admin password first.', false); return; }
   collectState();
   try {
@@ -170,11 +178,17 @@ async function saveAll() {
 }
 
 function showStatus(msg, ok) {
-  const el = document.getElementById('save-status');
-  el.textContent = msg;
-  el.className = 'save-status ' + (ok ? 'success' : 'error');
-  el.style.display = '';
-  setTimeout(() => { el.style.display = 'none'; }, 4000);
+  ['save-status', 'save-status-bottom'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'save-status ' + (ok ? 'success' : 'error');
+    el.style.display = '';
+  });
+  setTimeout(() => {
+    ['save-status', 'save-status-bottom'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+  }, 4000);
 }
 
 // ── Trip Info ─────────────────────────────────────
