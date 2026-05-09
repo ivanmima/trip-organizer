@@ -224,6 +224,10 @@ function buildDayEl(day, i) {
       <label>Attractions visited (comma-separated)</label>
       <input type="text" class="day-attractions" value="${esc((day.attractions || []).join(', '))}" placeholder="Eiffel Tower, The Louvre">
     </div>
+    <div class="form-group">
+      <label>Restaurants (comma-separated)</label>
+      <input type="text" class="day-restaurants" value="${esc((day.restaurants || []).join(', '))}" placeholder="Nobu Malibu, Bestia">
+    </div>
   `;
   return div;
 }
@@ -246,7 +250,8 @@ function collectItinerary() {
     date:        el.querySelector('.day-date').value,
     title:       el.querySelector('.day-title').value.trim(),
     notes:       el.querySelector('.day-notes').value.trim(),
-    attractions: el.querySelector('.day-attractions').value.split(',').map(s => s.trim()).filter(Boolean)
+    attractions: el.querySelector('.day-attractions').value.split(',').map(s => s.trim()).filter(Boolean),
+    restaurants: el.querySelector('.day-restaurants').value.split(',').map(s => s.trim()).filter(Boolean)
   }));
 }
 

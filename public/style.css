@@ -302,6 +302,16 @@ textarea { resize: vertical; min-height: 80px; }
   border: 1px solid #BFDBFE;
 }
 
+.restaurant-tag {
+  background: #FFF7ED;
+  color: #C2410C;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #FED7AA;
+}
+
 /* ── Attractions ────────────────────────────────── */
 .attractions-grid {
   display: grid;

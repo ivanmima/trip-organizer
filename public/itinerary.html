@@ -60,6 +60,11 @@
                 ${day.attractions.map(a => `<span class="attraction-tag">📍 ${esc(a)}</span>`).join('')}
               </div>
             ` : ''}
+            ${day.restaurants && day.restaurants.length ? `
+              <div class="attraction-tags" style="margin-top:6px">
+                ${day.restaurants.map(r => `<span class="restaurant-tag">🍽️ ${esc(r)}</span>`).join('')}
+              </div>
+            ` : ''}
           </div>
         </div>
       `).join('');
