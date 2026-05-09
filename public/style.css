@@ -31,7 +31,7 @@ body {
 }
 
 /* ── Navigation ────────────────────────────────── */
-nav {
+nav:not(.bottom-nav) {
   background: var(--primary);
   padding: 0 24px;
   display: flex;
@@ -644,8 +644,8 @@ textarea { resize: vertical; min-height: 80px; }
 /* ── Responsive ─────────────────────────────────── */
 @media (max-width: 768px) {
   /* Top nav: brand + admin icon only */
-  nav { height: 52px; padding: 0 16px; }
-  nav .nav-link:not(.nav-admin) { display: none; }
+  nav:not(.bottom-nav) { height: 52px; padding: 0 16px; }
+  nav:not(.bottom-nav) .nav-link:not(.nav-admin) { display: none; }
   .nav-admin { min-height: 44px; display: flex; align-items: center; }
   .nav-brand {
     font-size: 13px;
