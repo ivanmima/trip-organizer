@@ -24,7 +24,7 @@ function esc(str) {
 
 function setActiveNav() {
   const page = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-link').forEach(link => {
+  document.querySelectorAll('.nav-link, .bottom-nav-item').forEach(link => {
     if (link.getAttribute('href') === page) link.classList.add('active');
   });
 }
